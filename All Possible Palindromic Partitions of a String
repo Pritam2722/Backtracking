@@ -1,0 +1,82 @@
+//gfg code link
+//https://practice.geeksforgeeks.org/problems/find-all-possible-palindromic-partitions-of-a-string/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article
+
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+//User function Template for C++
+
+class Solution {
+  public:
+    bool checkPalindrome(string &S){
+        int n = S.size();
+        int i=0, j=n-1;
+        while(i<j){
+            if(S[i]!=S[j]){
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+    
+    void solve(string &S, vector<vector<string>> &ans, int index, vector<string> &curr){
+        //base case
+        if(index==S.size()){
+            ans.push_back(curr);
+            return;
+        }
+        
+        string t;
+        for(int i=index;i<S.size();i++){
+            t.push_back(S[i]);
+            
+            if(checkPalindrome(t)){
+                curr.push_back(t);
+                
+                solve(S, ans, i+1, curr);
+                
+                //backtracking
+                curr.pop_back();
+            }
+        }
+    }
+    
+    vector<vector<string>> allPalindromicPerms(string S) {
+        vector<vector<string>> ans;
+        
+        int index=0;
+        vector<string> curr;
+        solve(S, ans, index, curr);
+        
+        return ans;
+    }
+};
+
+//{ Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        string S;
+        
+        cin>>S;
+
+        Solution ob;
+        vector<vector<string>> ptr = ob.allPalindromicPerms(S);
+        
+        for(int i=0; i<ptr.size(); i++)
+        {
+            for(int j=0; j<ptr[i].size(); j++)
+            {
+                cout<<ptr[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+    }
+    return 0;
+}
+// } Driver Code Ends
